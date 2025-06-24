@@ -10,5 +10,4 @@ router.register(r'food-entries', food_entry_views.FoodEntryViewSet, basename='fo
 # The API URLs are now determined automatically by the router.
 urlpatterns = [
     path('', include(router.urls)),
-    path('api/', include('api.urls')),  
 ]
