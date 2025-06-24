@@ -12,6 +12,11 @@ class FoodEntryViewSet(viewsets.ModelViewSet):
     """
     A ViewSet for viewing and editing food entries.
     Provides `list`, `create`, `retrieve`, `update`, and `destroy` actions.
+    
+    Also includes custom actions for:
+    - `today`: Get all food entries for the current day.
+    - `daily_total`: Get the total calories for today.
+    - `history`: Get food entries for a specific date.
     """
     queryset = FoodEntry.objects.all().order_by('-consumed_at')
     serializer_class = FoodEntrySerializer 
@@ -28,20 +33,6 @@ class FoodEntryViewSet(viewsets.ModelViewSet):
         
         serializer = self.get_serializer(entries, many=True)
         return Response(serializer.data)
-
-    @action(detail=True, methods=['post'])
-    def copy_to_today(self, request, pk=None):
-        """
-        Copies an existing food entry, setting its consumed_at date to today.
-        """
-        original_entry = self.get_object()
-        new_entry = FoodEntry.objects.create(
-            food_name=original_entry.food_name,
-            calories=original_entry.calories,
-            consumed_at=timezone.now().date()
-        )
-        serializer = self.get_serializer(new_entry)
-        return Response(serializer.data, status=201)
     
     @action(detail=False, methods=['get'])
     def daily_total(self, request):
