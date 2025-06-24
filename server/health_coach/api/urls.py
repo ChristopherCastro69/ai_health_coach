@@ -1,11 +1,11 @@
 # server/api/urls.py
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from . import views
+from .views import food_entry_views
 
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
-router.register(r'food-entries', views.FoodEntryViewSet, basename='foodentry')
+router.register(r'food-entries', food_entry_views.FoodEntryViewSet, basename='foodentry')
 
 # The API URLs are now determined automatically by the router.
 urlpatterns = [
