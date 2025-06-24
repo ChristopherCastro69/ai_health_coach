@@ -20,36 +20,12 @@ async function request(endpoint, options = {}) {
   return response.json();
 }
 
-// --- API Functions ---
-
-export const getFoodEntriesForDate = (date) => {
-  return request(`/food-entries/?consumed_at=${date}`);
-};
-
-export const getDailyTotal = (date) => {
-  return request(`/food-entries/daily_total/?date=${date}`);
-};
-
-export const getHistoricalSummary = () => {
-  return request("/food-entries/historical_summary/");
-};
-
-export const createFoodEntryFromAI = (message) => {
-  return request("/ai/food-entry/", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ message }),
-  });
-};
-
-export const getHealthInsight = (date) => {
-  return request(`/ai/health-insight/?date=${date}`);
-};
+// --- Model Checking ---
 
 export const checkOllama = () => {
-  return request("/check/ollama/");
+  return request("/check-ollama/");
 };
 
 export const checkModel = () => {
-  return request("/check/model/");
+  return request("/check-model/");
 };

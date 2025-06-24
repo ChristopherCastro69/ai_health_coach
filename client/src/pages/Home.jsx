@@ -1,6 +1,21 @@
 import React from "react";
+import { useFood } from "../context/FoodDataContext";
+import Chat from "../components/Chat";
+import FullScreenLoader from "../components/FullScreenLoader";
 
-// Note: The original Provider component is being repurposed as the Home page.
-export default function Home() {
-  return <div>Hello World</div>;
+function Home() {
+  const { isSystemReady, systemCheckMessage } = useFood();
+
+  // Show a full-screen loader until the initial system checks are complete
+  if (!isSystemReady) {
+    return <FullScreenLoader message={systemCheckMessage} />;
+  }
+
+  return (
+    <div className="flex flex-row h-screen p-4 bg-main gap-4">
+      <Chat />
+    </div>
+  );
 }
+
+export default Home;
