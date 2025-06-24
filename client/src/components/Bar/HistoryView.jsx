@@ -1,15 +1,11 @@
 import React from "react";
-import { useFood } from "../../context/FoodDataContext";
 import { DatePicker } from "../DatePicker";
 
-function HistoryView({ setViewMode }) {
-  const { historicalTotals, setSelectedDate } = useFood();
-
+function HistoryView({ historicalTotals, setSelectedDate, setViewMode }) {
   const handleDateSelect = (date) => {
     setSelectedDate(new Date(date));
     setViewMode("breakdown");
   };
-
   return (
     <>
       <div>
