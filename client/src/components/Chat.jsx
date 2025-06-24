@@ -43,17 +43,17 @@ function Chat({ messages, setMessages, model, update, setFoodDataVersion }) {
       }
 
       const newEntries = await response.json();
+      console.log("AI response (newEntries):", newEntries);
 
-      // Create a summary message from the new entries
-      if (newEntries && newEntries.length > 0) {
+      if (newEntries) {
         const aiText = newEntries
           .map(
             (entry) =>
               `Added: ${entry.food_name} (${entry.calories} kcal for ${entry.consumed_at})`
           )
           .join("\n");
-        // Store the AI message as a pending message for Home.jsx to pick up
-        window.__pendingAIMessage = { who: "server", text: aiText };
+        console.log("AI message to display:", aiText);
+        setMessages((current) => [...current, { who: "server", text: aiText }]);
       }
 
       // Trigger a refresh in Home.jsx for the sidebar
