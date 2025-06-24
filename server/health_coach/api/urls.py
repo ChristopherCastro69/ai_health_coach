@@ -12,4 +12,5 @@ urlpatterns = [
     path('', include(router.urls)),
     path('check-ollama/', ai.check_ollama, name='check-ollama'),
     path('check-model/', ai.check_model, name='check-model'),
+    path('process-food-input/', ai.FoodEntryFromAI.as_view(), name='process-food-input'),
 ]
