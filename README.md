@@ -3,24 +3,8 @@ title: AI Health Coach
 description: Full-stack AI-powered health coach app
 ---
 
-sequenceDiagram
-    participant U as User
-    participant F as Frontend (React/Vite)
-    participant B as Backend (Django)
-    participant DB as MySQL
+![image](https://github.com/user-attachments/assets/c755ea21-a9e3-4376-87e4-20310f09e54b)
 
-    U->>F: Enters food (e.g. "I had pizza today")
-    F->>B: POST /api/food-entry-ai/ { message }
-    B->>B: AI processing (Ollama or local model)
-    B->>DB: Create food entry
-    B-->>F: AI response (created entries)
-    F-->>U: Show AI message in chat
-
-    U->>F: Selects a date on calendar
-    F->>B: GET /api/food-entries/history/?date=YYYY-MM-DD
-    B->>DB: Query food entries for date
-    B-->>F: List of food entries
-    F-->>U: Show entries and daily summary
 
 ## Quick Start (Docker)
 
