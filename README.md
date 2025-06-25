@@ -1,27 +1,154 @@
-# AI Health Coach
+---
 
-## Structure
+## Prerequisites
 
-- `backend/`: Django REST API
-- `frontend/`: React (Vite) UI
+- [Docker](https://www.docker.com/get-started) and [Docker Compose](https://docs.docker.com/compose/)
+- (For local dev) Node.js (v18+) and Python (3.10+)
 
-## Setup
+---
+
+## Quick Start (Docker)
+
+1. **Clone the repository:**
+
+   ```sh
+   git clone <your-repo-url>
+   cd ai_health_coach
+   ```
+
+2. **Create a `.env` file in the project root:**
+
+   ```env
+   MYSQL_DATABASE=health_coach_db
+   MYSQL_USER=healthuser
+   MYSQL_PASSWORD=healthpass
+   MYSQL_ROOT_PASSWORD=rootpass
+
+   DJANGO_SECRET_KEY=your-secret-key
+   DJANGO_DEBUG=True
+   DJANGO_ALLOWED_HOSTS=*
+
+   DB_NAME=health_coach_db
+   DB_USER=healthuser
+   DB_PASSWORD=healthpass
+   DB_HOST=db
+   DB_PORT=3306
+
+   VITE_API_BASE_URL=http://backend:8000
+   ```
+
+3. **Build and start all services:**
+
+   ```sh
+   docker-compose up --build
+   ```
+
+4. **Apply Django migrations:**
+
+   ```sh
+   docker-compose exec backend python manage.py migrate
+   ```
+
+5. **(Optional) Create a Django superuser:**
+
+   ```sh
+   docker-compose exec backend python manage.py createsuperuser
+   ```
+
+6. **Access the app:**
+   - Frontend: [http://localhost:5173](http://localhost:5173)
+   - Backend API: [http://localhost:8000](http://localhost:8000)
+   - MySQL: localhost:3306 (use credentials from `.env`)
+
+---
+
+## Local Development (Without Docker)
 
 ### Backend
-```sh
-cd backend
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-python manage.py migrate
-python manage.py runserver
-```
+
+1. **Install Python dependencies:**
+
+   ```sh
+   cd server
+   python -m venv venv
+   source venv/bin/activate  # or venv\Scripts\activate on Windows
+   pip install -r requirements.txt
+   ```
+
+2. **Configure your database in `server/health_coach/health_coach/settings.py`.**
+
+3. **Run migrations and start the server:**
+   ```sh
+   python manage.py migrate
+   python manage.py runserver
+   ```
 
 ### Frontend
-```sh
-cd frontend
-npm install
-npm run dev
-```
-`
 
+1. **Install Node dependencies:**
+
+   ```sh
+   cd client
+   npm install
+   ```
+
+2. **Set API base URL in `.env` (in `client/`):**
+
+   ```
+   VITE_API_BASE_URL=http://localhost:8000
+   ```
+
+3. **Start the dev server:**
+   ```sh
+   npm run dev
+   ```
+
+---
+
+## Environment Variables
+
+- All environment variables for Docker Compose are set in the root `.env` file.
+- For local frontend dev, set `VITE_API_BASE_URL` in `client/.env`.
+
+---
+
+## API Endpoints
+
+- **Check Ollama:** `GET /api/check-ollama/`
+- **Check Model:** `GET /api/check-model/`
+- **Food Entries:** `GET/POST /api/food-entries/`
+- **Food Entry AI:** `POST /api/food-entry-ai/`
+- **Health Insight:** `POST /api/health-insight/`
+- ...and more (see Django REST API code for details)
+
+---
+
+## Useful Commands
+
+- **Stop all containers:**  
+  `docker-compose down`
+- **Rebuild after code changes:**  
+  `docker-compose up --build`
+- **View logs:**  
+  `docker-compose logs -f`
+
+---
+
+## Troubleshooting
+
+- If you see MySQL connection errors, ensure the database service is healthy and Django is using the correct credentials.
+- If the frontend cannot reach the backend, check that `VITE_API_BASE_URL` is set correctly and both services are running.
+
+---
+
+## License
+
+MIT
+
+---
+
+## Contributors
+
+- Christopher Castro
+
+---
