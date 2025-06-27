@@ -3,32 +3,39 @@ This module provides utility functions for interacting with the Ollama AI servic
 """
 
 import requests
-import subprocess
 import json
 import re
+import os
+
+# Use an environment variable for the Ollama host.
+# In Docker, this will be 'host.docker.internal'. Locally, it will default to 'localhost'.
+OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "localhost")
+OLLAMA_BASE_URL = f"http://{OLLAMA_HOST}:11434"
 
 # Set your model name here to be used across the application
 MODEL_NAME = "gemma2:2b"
 
-def check_ollama_installed():
-    """Checks if Ollama is installed and available in the system's PATH."""
+def check_ollama_service_running():
+    """Checks if the Ollama service is running by hitting its root endpoint."""
     try:
-        subprocess.run(['ollama', '--version'], check=True, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        return True
-    except (subprocess.CalledProcessError, FileNotFoundError):
-        return False 
-    
-
+        response = requests.get(OLLAMA_BASE_URL, timeout=3)
+        # Check for a successful status and if the response body contains the expected text.
+        if response.status_code == 200 and "Ollama is running" in response.text:
+            return True
+        return False
+    except requests.exceptions.RequestException:
+        # Any network exception means the service is not accessible.
+        return False
 
 def check_model_available():
     """Checks if the specified MODEL_NAME is available in Ollama."""
     try:
-        response = requests.get("http://localhost:11434/api/tags", timeout=5)
+        response = requests.get(f"{OLLAMA_BASE_URL}/api/tags", timeout=5)
         response.raise_for_status()
         models_data = response.json()
         return any(model['name'] == MODEL_NAME for model in models_data.get('models', []))
     except (requests.exceptions.RequestException, json.JSONDecodeError):
-        return False 
+        return False
 
 def generate_ai_response(prompt):
     """
@@ -37,7 +44,7 @@ def generate_ai_response(prompt):
     """
     try:
         response = requests.post(
-            "http://localhost:11434/api/generate",
+            f"{OLLAMA_BASE_URL}/api/generate",
             json={
                 "model": MODEL_NAME,
                 "prompt": prompt,
