@@ -3,12 +3,11 @@ services:
   db:
     image: mysql:8.0
     restart: always
-    env_file: .env
     environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: health_coach_db
+      MYSQL_USER: healthuser
+      MYSQL_PASSWORD: healthpass
+      MYSQL_ROOT_PASSWORD: root_password
     ports:
       - "3306:3306"
     volumes:
@@ -17,7 +16,16 @@ services:
   backend:
     build:
       context: ./server
-    env_file: .env
+    environment:
+      - DJANGO_SECRET_KEY=django-insecure-your-secret-key-here-change-in-production
+      - DJANGO_DEBUG=True
+      - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
+      - DB_NAME=health_coach_db
+      - DB_USER=healthuser
+      - DB_PASSWORD=healthpass
+      - DB_HOST=db
+      - DB_PORT=3306
+      - OLLAMA_HOST=host.docker.internal
     volumes:
       - ./server:/app
     ports:
@@ -28,7 +36,6 @@ services:
   frontend:
     build:
       context: ./client
-    env_file: .env
     volumes:
       - ./client:/app
     ports:

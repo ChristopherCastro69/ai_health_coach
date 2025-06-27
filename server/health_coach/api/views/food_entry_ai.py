@@ -14,7 +14,7 @@ from ..models import FoodEntry
 from ..serializers import FoodEntrySerializer
 from ..prompts.ai_prompts import HEALTH_COACH_PROMPT
 from ..utils.ollama import (
-    check_ollama_installed,
+    check_ollama_service_running,
     check_model_available,
     generate_ai_response,
     extract_json_from_response,
@@ -23,8 +23,9 @@ from ..utils.ollama import (
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def check_ollama(request):
-    """Checks if Ollama is installed and available in the system's PATH."""
-    return Response({'message': check_ollama_installed()})
+    """Checks if the Ollama service is running and accessible."""
+    return Response({'message': check_ollama_service_running()})
+
 
 
 @api_view(['GET'])
