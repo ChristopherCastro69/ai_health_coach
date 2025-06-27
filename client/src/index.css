@@ -1,89 +1,53 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-@layer base {
-  :root {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
-
-    --radius: 0.5rem;
-
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-  }
-
-  .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
-
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-  }
+@theme {
+  --color-primary: #121214;
+  --color-input: #1d1d1f;
+  --color-main: #0a0a0b;
+  --color-box: #020203;
+  --color-text: rgba(255, 255, 255, 0.5);
+  --color-hovercl: #36363a;
+  --color-border: #2d2d31;
+  --color-background: #18181b;
+  --color-foreground: #fafafa;
+  --font-sans: "Inter", "system-ui", "sans-serif";
+  --color-primary-foreground: 240 5.9% 10%;
+  --color-secondary: 240 3.7% 15.9%;
+  --color-secondary-foreground: 0 0% 98%;
+  --color-muted: 240 3.7% 15.9%;
+  --color-muted-foreground: 240 5% 64.9%;
+  --color-accent: 240 3.7% 15.9%;
+  --color-accent-foreground: 0 0% 98%;
+  --color-destructive: 0 62.8% 30.6%;
+  --color-destructive-foreground: 0 0% 98%;
+  --color-ring: 240 4.9% 83.9%;
+  --color-card: 240 10% 3.9%;
+  --color-card-foreground: 0 0% 98%;
+  --color-popover: 240 10% 3.9%;
+  --color-popover-foreground: 0 0% 98%;
+  --color-primary-shadcn: 0 0% 98%;
+  --color-primary-shadcn-foreground: 240 5.9% 10%;
+  --color-chart-1: 220 70% 50%;
+  --color-chart-2: 160 60% 45%;
+  --color-chart-3: 30 80% 55%;
+  --color-chart-4: 280 65% 60%;
+  --color-chart-5: 340 75% 55%;
+  --radius: 0.5rem;
+  --radius-lg: 0.5rem;
+  --radius-md: calc(0.5rem - 2px);
+  --radius-sm: calc(0.5rem - 4px);
+  --container-padding: 2rem;
+  --container-2xl: 1400px;
 }
 
 @layer base {
   * {
-    @apply border-border;
+    border-color: hsl(var(--color-border));
   }
   body {
-    @apply bg-background text-foreground;
+    background-color: hsl(var(--color-background));
+    color: hsl(var(--color-foreground));
+    font-family: var(--font-sans);
   }
 }
 
@@ -163,4 +127,9 @@
 
 .sh::-webkit-scrollbar {
   display: none;
+}
+
+.my-card {
+  background-color: var(--color-box);
+  color: var(--color-text);
 }
