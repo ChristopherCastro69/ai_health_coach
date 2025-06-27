@@ -169,6 +169,72 @@ sequenceDiagram
 
 ---
 
+---
+
+## Ollama Service Detection & Docker Networking
+
+### Overview
+
+This project uses [Ollama](https://ollama.com/) as a local AI model backend. The Django backend checks if Ollama is running by making a network request to its API endpoint, rather than checking for a local binary. This approach is robust and works seamlessly in Dockerized environments.
+
+### How It Works
+
+- The backend checks if Ollama is running by sending a GET request to:
+
+  ```
+  http://localhost:11434/
+  ```
+
+  If the response contains `Ollama is running`, the service is considered available.
+
+- The backend also checks if the required model (e.g., `gemma2:2b`) is available by querying:
+  ```
+  http://localhost:11434/api/tags
+  ```
+
+### Docker Networking
+
+- When running in Docker, the backend container cannot access `localhost` on your host machine directly.
+- We use the special DNS name `host.docker.internal` to allow the container to reach services running on the host.
+- This is set via the environment variable in `docker-compose.yml`:
+  ```yaml
+  environment:
+    - OLLAMA_HOST=host.docker.internal
+  ```
+- The backend code uses this variable to construct the correct API URL.
+
+### Environment Variables
+
+| Variable    | Description                               | Default   |
+| ----------- | ----------------------------------------- | --------- |
+| OLLAMA_HOST | Hostname for Ollama API (Docker: special) | localhost |
+
+### Example: How the Check Works
+
+```python
+import os
+import requests
+
+OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "localhost")
+OLLAMA_BASE_URL = f"http://{OLLAMA_HOST}:11434"
+
+def check_ollama_service_running():
+    try:
+        response = requests.get(OLLAMA_BASE_URL, timeout=3)
+        return response.status_code == 200 and "Ollama is running" in response.text
+    except requests.exceptions.RequestException:
+        return False
+```
+
+### Troubleshooting
+
+- **Ollama not detected in Docker?**
+  - Make sure Ollama is running on your host machine.
+  - Ensure `OLLAMA_HOST=host.docker.internal` is set in your backend service environment.
+  - Restart your containers after changing environment variables.
+
+---
+
 ## License
 
 MIT
